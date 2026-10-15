@@ -3,6 +3,9 @@ using System.Numerics;
 
 namespace Yggdrasilnet.Maths.Collision;
 
+/// <summary>
+///  AABB.
+/// </summary>
 public struct BoundingBoxes {
     public Vector3 Min;
     public Vector3 Max;

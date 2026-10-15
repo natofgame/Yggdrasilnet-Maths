@@ -3,9 +3,21 @@ using System.Numerics;
 
 namespace Yggdrasilnet.Maths.Collision;
 
+/// <summary>
+///  AABB sweep.
+/// </summary>
 public static class AabbSweep {
     private const float Epsilon = 1e-8f;
 
+    /// <summary>
+    ///  Tries to get the time of impact between two bounding boxes.
+    /// </summary>
+    /// <param name="moving"></param>
+    /// <param name="displacement"></param>
+    /// <param name="obstacle"></param>
+    /// <param name="timeOfImpact"></param>
+    /// <param name="normal"></param>
+    /// <returns></returns>
     public static bool TryGetTimeOfImpact(
         in BoundingBoxes moving,
         Vector3 displacement,
@@ -46,10 +58,18 @@ public static class AabbSweep {
         return tEnter > 0f;
     }
 
-    public static bool TryComputeMinimumTranslation(in BoundingBoxes a, in BoundingBoxes b, out Vector3 t)
-    {
+    /// <summary>
+    ///  Tries to compute the minimum translation between two bounding boxes.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="t"></param>
+    /// <returns></returns>
+    public static bool TryComputeMinimumTranslation(in BoundingBoxes a, in BoundingBoxes b, out Vector3 t) {
         t = Vector3.Zero;
-        if (!a.Intersects(b)) return false;
+        if (!a.Intersects(b)) {
+            return false;
+        }
 
         var pushX = (b.Max.X - a.Min.X) < (a.Max.X - b.Min.X) ? (b.Max.X - a.Min.X) : -(a.Max.X - b.Min.X);
         var pushZ = (b.Max.Z - a.Min.Z) < (a.Max.Z - b.Min.Z) ? (b.Max.Z - a.Min.Z) : -(a.Max.Z - b.Min.Z);
@@ -60,6 +80,17 @@ public static class AabbSweep {
         return true;
     }
 
+    /// <summary>
+    ///  Clips a bounding box along an axis.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <param name="axis"></param>
+    /// <param name="tEnter"></param>
+    /// <param name="tExit"></param>
+    /// <param name="normal"></param>
+    /// <returns></returns>
     private static bool ClipAxis(
         float direction,
         float min,
